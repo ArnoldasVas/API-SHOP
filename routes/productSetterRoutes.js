@@ -1,19 +1,22 @@
 const { Router } = require('express');
-const { postAllProducts } = require('../controllers');
-const { patchProductById } = require('../controllers');
+const { createProduct, updateProduct } = require('../controllers');
 
 const router = Router();
 
 //POST /product
-router.post('/', (req, res) => {
-  const data = postAllProducts();
-
-  res.json(data);
+router.post('/', async (req, res) => {
+  try {
+    const data = await createProduct(req.body);
+    res.json(data);
+  } catch (error) {
+    console.log(`Error: ${error.message}, status: ${error.status}`);
+    res.status(400).json({ error: error.message });
+  }
 });
 
 //PATCH /product/:id
 router.patch('/:id', (req, res) => {
-  const data = patchProductById();
+  const data = updateProduct();
 
   res.json(data);
 });
