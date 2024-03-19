@@ -15,8 +15,14 @@ router.post('/', async (req, res) => {
 });
 
 //PATCH /product/:id
-router.patch('/:id', (req, res) => {
-  const data = updateProduct();
+router.patch('/:id', async (req, res) => {
+  try {
+    const data = await updateProduct(req.body);
+    res.json(data);
+  } catch (error) {
+    console.log(`Error: ${error.message}, status: ${error.status}`);
+    res.status(400).json({ error: error.message });
+  }
 
   res.json(data);
 });

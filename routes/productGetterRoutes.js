@@ -4,15 +4,25 @@ const { getAllProducts, getProductById } = require('../controllers');
 const router = Router();
 
 //GET /product
-router.get('/', (req, res) => {
-  const data = getAllProducts();
-
-  res.json(data);
+router.get('/', async (req, res) => {
+  try {
+    const data = await getAllProducts(req.body);
+    res.send(data);
+  } catch (error) {
+    console.log(`Error: ${error.message}, status: ${error.status}`);
+    res.status(400).json({ error: error.message });
+  }
 });
 
 //GET /product/:id
-router.get('/:id', (req, res) => {
-  const data = getProductById();
+router.get('/:id', async (req, res) => {
+  try {
+    const data = await getProductById(req.body);
+    res.send(data);
+  } catch (error) {
+    console.log(`Error: ${error.message}, status: ${error.status}`);
+    res.status(400).json({ error: error.message });
+  }
 
   res.json(data);
 });
