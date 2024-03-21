@@ -1,13 +1,16 @@
-// function updateProduct() {
-//   return 'product updated';
-// }
+const { Types } = require('mongoose');
 
-const Product = require('../models/productModel.js');
+const {
+  updateProductValidation,
+} = require('../validation/updateProductValidation');
+const Product = require('../models/productModel');
 
-async function updateProduct() {
-  const response = await Product.find();
+async function updateProduct(id, data) {
+  updateProductValidation(id, data);
 
-  console.log(response);
+  const response = await Product.findByIdAndUpdate(id, data, {
+    new: true,
+  });
 
   return response;
 }
