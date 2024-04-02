@@ -1,8 +1,10 @@
 const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 async function loginUser(user) {
   const { username, password } = user;
+
   if (!username || !password)
     throw new Error('username and password are required');
 
@@ -14,6 +16,12 @@ async function loginUser(user) {
 
   if (!match) throw new Error('username or password is incorrect');
 
-  return 'Successfully logged in';
+  //create token
+  const token = jwt.sign({ username }, process.env.JWT_SECRET, {
+    expiresIn: '20s',
+  });
+
+  return { token };
 }
+
 module.exports = loginUser;
